@@ -30,7 +30,9 @@ __plugin_meta__ = PluginMetadata(
     type="application",  # library
     homepage="https://github.com/pmlrin/nonebot-plugin-calcgame-new",
     config=Config,
-    supported_adapters=inherit_supported_adapters("nonebot_plugin_alconna"),
+    supported_adapters=inherit_supported_adapters(
+        "nonebot_plugin_alconna", "nonebot_plugin_htmlrender"
+    ),
     # supported_adapters={"~onebot.v11"}, # 仅 onebot
     extra={"author": "pmlrin <Yurchiu@outlook.com>"},
 )

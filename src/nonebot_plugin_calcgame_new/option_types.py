@@ -37,6 +37,9 @@ class OptionType(Enum):
     CURSOR_LOCK = auto()
 
 
+yunhu = 0
+
+
 class OptionCategory:
     def __init__(self) -> None:
         self.no_values = (
