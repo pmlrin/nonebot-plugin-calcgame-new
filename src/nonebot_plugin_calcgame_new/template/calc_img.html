@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计算游戏</title>
+    <link rel="stylesheet" href="calc_img.css">
+</head>
+
+<body>
+    <div class="calculator">
+        <div class="header">
+            <span>关卡 <span id="level">{{level}}</span></span>
+        </div>
+        <div class="display">
+            <div class="display-top">
+                <div class="info-box">
+                    <div class="info-item">
+                        <span class="label">步数:</span>
+                        <span id="steps" class="info-number">{{step_limit}}</span>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <div class="info-item">
+                        <span class="label">目标:</span>
+                        <span id="target" class="info-number">{{target_value}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="display-number">
+                <div class="symbols-top">
+                    <span class="symbol-cell">{{portal_up[8]}}</span>
+                    <span class="symbol-cell">{{portal_up[7]}}</span>
+                    <span class="symbol-cell">{{portal_up[6]}}</span>
+                    <span class="symbol-cell">{{portal_up[5]}}</span>
+                    <span class="symbol-cell">{{portal_up[4]}}</span>
+                    <span class="symbol-cell">{{portal_up[3]}}</span>
+                    <span class="symbol-cell">{{portal_up[2]}}</span>
+                    <span class="symbol-cell">{{portal_up[1]}}</span>
+                </div>
+                <div class="current-number">
+                    <span class="number-cell">{{current_value[7]}}</span>
+                    <span class="number-cell">{{current_value[6]}}</span>
+                    <span class="number-cell">{{current_value[5]}}</span>
+                    <span class="number-cell">{{current_value[4]}}</span>
+                    <span class="number-cell">{{current_value[3]}}</span>
+                    <span class="number-cell">{{current_value[2]}}</span>
+                    <span class="number-cell">{{current_value[1]}}</span>
+                    <span class="number-cell">{{current_value[0]}}</span>
+                </div>
+                <div class="symbols-bottom">
+                    <span class="symbol-cell">{{portal_down[8]}}</span>
+                    <span class="symbol-cell">{{portal_down[7]}}</span>
+                    <span class="symbol-cell">{{portal_down[6]}}</span>
+                    <span class="symbol-cell">{{portal_down[5]}}</span>
+                    <span class="symbol-cell">{{portal_down[4]}}</span>
+                    <span class="symbol-cell">{{portal_down[3]}}</span>
+                    <span class="symbol-cell">{{portal_down[2]}}</span>
+                    <span class="symbol-cell">{{portal_down[1]}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="keypad">
+            <button class="key" style="background: {{key[0].color}};">
+                <span class="badge badge-left">1</span>
+                <span class="key-label">{{key[0].display_text}}</span>
+            </button>
+            <button class="key" style="background: {{key[1].color}};">
+                <span class="badge badge-left">2</span>
+                <span class="key-label">{{key[1].display_text}}</span>
+            </button>
+            <button class="key" style="background: {{key[2].color}};">
+                <span class="badge badge-left">3</span>
+                <span class="key-label">{{key[2].display_text}}</span>
+            </button>
+            <button class="key" style="background: {{key[3].color}};">
+                <span class="badge badge-left">4</span>
+                <span class="key-label">{{key[3].display_text}}</span>
+            </button>
+            <button class="key" style="background: {{key[4].color}};">
+                <span class="badge badge-left">5</span>
+                <span class="key-label">{{key[4].display_text}}</span>
+            </button>
+            <button class="key" style="background: {{key[5].color}};">
+                <span class="badge badge-left">6</span>
+                <span class="key-label">{{key[5].display_text}}</span>
+            </button>
+            <button class="key" style="background: {{key[6].color}};">
+                <span class="badge badge-left">7</span>
+                <span class="key-label">{{key[6].display_text}}</span>
+            </button>
+            <button class="key" style="background: {{key[7].color}};">
+                <span class="badge badge-left">8</span>
+                <span class="key-label">{{key[7].display_text}}</span>
+            </button>
+            <button class="key" style="background: {{key[8].color}};">
+                <span class="badge badge-left">9</span>
+                <span class="key-label">{{key[8].display_text}}</span>
+            </button>
+        </div>
+    </div>
+</body>
