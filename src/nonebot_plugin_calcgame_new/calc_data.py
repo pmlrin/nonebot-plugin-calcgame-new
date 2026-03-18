@@ -6,6 +6,8 @@ from .option_types import OptionType
 
 
 class CalcGameDataType(TypedDict):
+    """关卡数据类型定义"""
+
     level: int
     target_value: int
     step_limit: int
@@ -15,6 +17,8 @@ class CalcGameDataType(TypedDict):
 
 
 class CalcGameData:
+    """关卡数据类，包含关卡数据和数据解析方法"""
+
     def __init__(self) -> None:
         self.calc_data = [
             ["level", "target_value", "step_limit", "current_value"],
@@ -380,11 +384,19 @@ class CalcGameData:
             319: (5, 1),
         }
 
+        self.help_msg = """计算器：游戏 帮助
+/calc 选择随机关卡，/calc [关卡编号] 选择指定关卡，/calc 帮助 查看帮助。
+游戏玩法：通过给出的操作方式由当前数字达到计算目标。
+达到目标数字即为胜利。步数用尽且未达到目标数字即为失败。
+只需要输入相应数字即可进行相应操作。某些操作需要额外输入一个数字。
+游戏时输入“帮助”查看本局游戏帮助，“退出”结束游戏。"""
+
     def get_level_count(self) -> int:
+        """获取关卡数量"""
         return len(self.calc_data) - 1
 
     def extract_numbers(self, s: str, count: int) -> list[int]:
-        # 从字符串中匹配给定数量的数字，可以匹配负数。
+        """从字符串中匹配给定数量的数字，可以匹配负数。"""
         numbers = re.findall(r"-?\d+", s)
         ret_list = [int(n) for n in numbers[:count]]
         if len(ret_list) != count:
@@ -394,18 +406,14 @@ class CalcGameData:
         return ret_list
 
     def data_praser(self, index: int) -> CalcGameDataType:  # noqa: C901, PLR0912, PLR0915
+        """根据关卡索引解析关卡数据，返回一个结构化的 CalcGameDataType 对象。"""
+
         if index < 1 or index > self.get_level_count():  # 关卡索引从 1 开始，0 是占位符
             raise GameError.GameDataPraserError(  # noqa: TRY003
                 f"关卡范围为 1-{self.get_level_count()}，{index} 超出范围。"
             )
 
         raw_data = self.calc_data[index]
-        if (
-            len(raw_data) < 5  # noqa: PLR2004
-        ):  # 5 是包含基本数据的最小长度（至少包含一种操作）
-            raise GameError.GameDataPraserError(  # noqa: TRY003
-                f"关卡 {index} 的数据不完整: {raw_data}"
-            )
         try:
             prased_data = CalcGameDataType(
                 {
@@ -419,10 +427,14 @@ class CalcGameData:
             )
             if index in self.portal_data:
                 prased_data["portal"] = self.portal_data[index]
-        except (ValueError, IndexError) as e:
+            raw_data[4] = raw_data[4]
+        except ValueError as e:
+            raise GameError.ConvertIntError from e
+        except IndexError as e:
             raise GameError.GameDataPraserError(  # noqa: TRY003
-                f"关卡 {index} 的数据解析错误: {e}"
+                f"关卡 {index} 的数据不完整: {raw_data}"
             ) from e
+
         for option in raw_data[4:]:
             if option.startswith("(") and option.endswith(")"):
                 cur_option = option[1:-1]  # 去掉括号
@@ -451,9 +463,7 @@ class CalcGameData:
                     minus_num = self.extract_numbers(cur_option, 1)[0] * -1
                     prased_data["options"].append((OptionType.CURSOR_SUB, (minus_num,)))
                 else:
-                    raise GameError.GameDataPraserError(  # noqa: TRY003
-                        f"关卡 {index} 的未知光标操作: {cur_option}"
-                    )
+                    raise GameError.InvalidOptionTypeError(option)
             elif option == "<<":
                 prased_data["options"].append((OptionType.BACKSPACE, ()))
             elif option == "sort<":
@@ -506,7 +516,5 @@ class CalcGameData:
                 cut_num = self.extract_numbers(option, 1)[0]
                 prased_data["options"].append((OptionType.CUT, (cut_num,)))
             else:
-                raise GameError.GameDataPraserError(  # noqa: TRY003
-                    f"关卡 {index} 的未知操作: {option}"
-                )
+                raise GameError.InvalidOptionTypeError(option)
         return prased_data

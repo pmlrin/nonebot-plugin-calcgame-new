@@ -3,6 +3,8 @@ from .option_types import OptionBaseMethod, OptionCategory, OptionType
 
 
 class AddOption(OptionBaseMethod):
+    """将当前数值与参数中的第一个值的整数进行相加，作为新的当前数值。"""
+
     def __init__(
         self,
         values: tuple[int, ...] = (),
@@ -16,11 +18,12 @@ class AddOption(OptionBaseMethod):
         )
 
     def method(self) -> None:
-        # 将当前数值与参数中的第一个值的整数进行相加，作为新的当前数值。
         self.value_int += self.option_values[0]
 
 
 class SubtractOption(OptionBaseMethod):
+    """将当前数值与参数中的第一个值的整数进行相减，作为新的当前数值。"""
+
     def __init__(
         self,
         values: tuple[int, ...] = (),
@@ -34,11 +37,12 @@ class SubtractOption(OptionBaseMethod):
         )
 
     def method(self) -> None:
-        # 将当前数值与参数中的第一个值的整数进行相减，作为新的当前数值。
         self.value_int -= self.option_values[0]
 
 
 class MultiplyOption(OptionBaseMethod):
+    """将当前数值与参数中的第一个值的整数进行相乘，作为新的当前数值。"""
+
     def __init__(
         self,
         values: tuple[int, ...] = (),
@@ -52,11 +56,12 @@ class MultiplyOption(OptionBaseMethod):
         )
 
     def method(self) -> None:
-        # 将当前数值与参数中的第一个值的整数进行相乘，作为新的当前数值。
         self.value_int *= self.option_values[0]
 
 
 class DivideOption(OptionBaseMethod):
+    """将当前数值与参数中的第一个值的整数进行相除，作为新的当前数值。必须保证可以整除。"""
+
     def __init__(
         self,
         values: tuple[int, ...] = (),
@@ -70,13 +75,14 @@ class DivideOption(OptionBaseMethod):
         )
 
     def method(self) -> None:
-        # 将当前数值与参数中的第一个值的整数进行相除，作为新的当前数值。
         if self.value_int % self.option_values[0] != 0:
             raise GameError.NotDivisibleError((self.value_int, self.option_values[0]))
         self.value_int //= self.option_values[0]
 
 
 class BackspaceOption(OptionBaseMethod):
+    """删除当前数值的最后一位数字。"""
+
     def __init__(self) -> None:
         super().__init__(
             option_type=OptionType.BACKSPACE,
@@ -87,11 +93,12 @@ class BackspaceOption(OptionBaseMethod):
         )
 
     def method(self) -> None:
-        # 将当前数值除以 10 并向下取整，相当于删除当前数值的最后一位数字。
         self.value_int //= 10
 
 
 class PushOption(OptionBaseMethod):
+    """在当前数值的末尾添加一个数字。"""
+
     def __init__(
         self,
         values: tuple[int, ...] = (),
@@ -106,12 +113,12 @@ class PushOption(OptionBaseMethod):
         )
 
     def method(self) -> None:
-        # 将当前数值的字符串表示与参数中的第一个值的字符串表示连接起来
-        # 再将结果转换为整数作为新的当前数值，相当于在当前数值的末尾添加一个数字。
         self.value_str += str(self.option_values[0])
 
 
 class ReplaceOption(OptionBaseMethod):
+    """将当前数值的所有第一个值替换为第二个值。"""
+
     def __init__(
         self,
         values: tuple[int, ...] = (),
@@ -126,8 +133,6 @@ class ReplaceOption(OptionBaseMethod):
         )
 
     def method(self) -> None:
-        # 将当前数值的字符串表示中的参数中的第一个值的字符串表示
-        # 替换为参数中的第二个值的字符串表示
         if len(self.option_values) > 1:
             self.value_str = self.value_str.replace(
                 str(self.option_values[0]), str(self.option_values[1])
@@ -135,18 +140,18 @@ class ReplaceOption(OptionBaseMethod):
 
 
 class SortAscendingOption(OptionBaseMethod):
+    """将当前数值的数码按升序排列。"""
+
     def __init__(self) -> None:
         super().__init__(
             option_type=OptionType.SORTASCENDING,
             display_template="Sort<",
-            help_message_template="将当前数值按升序排列。",
+            help_message_template="将当前数值的数码按升序排列。",
             background_color="#DB7633",
             option_value_count=0,
         )
 
     def method(self) -> None:
-        # 将当前数值的字符串表示按升序排列
-        # 注意负数的负号
         if self.value_str.startswith("-"):
             self.value_str = "-" + "".join(sorted(self.value_str[1:]))
         else:
@@ -154,18 +159,18 @@ class SortAscendingOption(OptionBaseMethod):
 
 
 class SortDescendingOption(OptionBaseMethod):
+    """将当前数值的数码按降序排列。"""
+
     def __init__(self) -> None:
         super().__init__(
             option_type=OptionType.SORTDESCENDING,
             display_template="Sort>",
-            help_message_template="将当前数值按降序排列。",
+            help_message_template="将当前数值的数码按降序排列。",
             background_color="#DB7633",
             option_value_count=0,
         )
 
     def method(self) -> None:
-        # 将当前数值的字符串表示按降序排列
-        # 注意负数的负号
         if self.value_str.startswith("-"):
             self.value_str = "-" + "".join(sorted(self.value_str[1:], reverse=True))
         else:
@@ -173,6 +178,8 @@ class SortDescendingOption(OptionBaseMethod):
 
 
 class PowerOption(OptionBaseMethod):
+    """将当前数值取某次幂作为新的当前数值。"""
+
     def __init__(
         self,
         values: tuple[int, ...] = (),
@@ -190,21 +197,24 @@ class PowerOption(OptionBaseMethod):
 
 
 class ToggleOption(OptionBaseMethod):
+    """将当前数值取相反数。"""
+
     def __init__(self) -> None:
         super().__init__(
             option_type=OptionType.TOGGLE,
             display_template="+/-",
-            help_message_template="将当前数值取反。",
+            help_message_template="将当前数值取相反数。",
             background_color="#DB7633",
             option_value_count=0,
         )
 
     def method(self) -> None:
-        # 将当前数值乘以 -1，相当于取反。
         self.value_int *= -1
 
 
 class ReverseOption(OptionBaseMethod):
+    """将当前数值的数字顺序反转。"""
+
     def __init__(self) -> None:
         super().__init__(
             option_type=OptionType.REVERSE,
@@ -215,8 +225,6 @@ class ReverseOption(OptionBaseMethod):
         )
 
     def method(self) -> None:
-        # 将当前数值的字符串表示反转
-        # 注意负数的负号
         if self.value_str.startswith("-"):
             self.value_str = "-" + self.value_str[:0:-1]
         else:
@@ -224,6 +232,8 @@ class ReverseOption(OptionBaseMethod):
 
 
 class SumOption(OptionBaseMethod):
+    """将当前数值的各位数字相加作为新的当前数值。"""
+
     def __init__(self) -> None:
         super().__init__(
             option_type=OptionType.SUM,
@@ -234,8 +244,6 @@ class SumOption(OptionBaseMethod):
         )
 
     def method(self) -> None:
-        # 将当前数值的字符串表示中的每个数字相加作为新的当前数值
-        # 注意负数的负号
         try:
             if self.value_str.startswith("-"):
                 self.value_int = -sum(int(i) for i in self.value_str[1:])
@@ -246,6 +254,8 @@ class SumOption(OptionBaseMethod):
 
 
 class ShiftLeftOption(OptionBaseMethod):
+    """将当前数值的数字顺序向左移动一位，最左边的数字移到最右边。"""
+
     def __init__(self) -> None:
         super().__init__(
             option_type=OptionType.SHIFTLEFT,
@@ -256,7 +266,6 @@ class ShiftLeftOption(OptionBaseMethod):
         )
 
     def method(self) -> None:
-        # 将当前数值的字符串表示向左移动一位,最左边的数字移到最右边，注意负号
         sign = -1 if self.value_str.startswith("-") else 1
         self.value_str = self.value_str.lstrip("-")
         self.value_str = (
@@ -269,6 +278,8 @@ class ShiftLeftOption(OptionBaseMethod):
 
 
 class ShiftRightOption(OptionBaseMethod):
+    """将当前数值的数字顺序向右移动一位，最右边的数字移到最左边。"""
+
     def __init__(self) -> None:
         super().__init__(
             option_type=OptionType.SHIFTRIGHT,
@@ -279,7 +290,6 @@ class ShiftRightOption(OptionBaseMethod):
         )
 
     def method(self) -> None:
-        # 将当前数值的字符串表示向右移动一位,最右边的数字移到最左边，注意负号
         sign = -1 if self.value_str.startswith("-") else 1
         self.value_str = self.value_str.lstrip("-")
         self.value_str = (
@@ -292,17 +302,18 @@ class ShiftRightOption(OptionBaseMethod):
 
 
 class MirrorOption(OptionBaseMethod):
+    """将当前数值反转后插入到原数值后面。"""
+
     def __init__(self) -> None:
         super().__init__(
             option_type=OptionType.MIRROR,
             display_template="Mirror",
-            help_message_template="将当前数值的字符串表示反转后插入到原字符串后面。",
+            help_message_template="将当前数值反转后插入到原数值后面。",
             background_color="#DB7633",
             option_value_count=0,
         )
 
     def method(self) -> None:
-        # 将当前数值的字符串表示反转后插入到原字符串后面，注意负号
         if self.value_str.startswith("-"):
             self.value_str = self.value_str + self.value_str[:0:-1]
         else:
@@ -310,6 +321,8 @@ class MirrorOption(OptionBaseMethod):
 
 
 class ModifyOption(OptionBaseMethod):
+    """将具有一个参数的操作的值都增加某个数。"""
+
     def __init__(
         self,
         values: tuple[int, ...] = (),
@@ -324,11 +337,13 @@ class ModifyOption(OptionBaseMethod):
         )
 
     def special_method(self) -> int:
-        # 获取 MODIFY 操作的修改值，默认为参数中的第一个值，如果没有参数则默认为 0
+        """获取 MODIFY 操作的修改值，默认为参数中的第一个值，如果没有参数则默认为 0"""
         return self.option_values[0] if len(self.option_values) > 0 else 0
 
 
 class StoreOption(OptionBaseMethod):
+    """0. 将存储的数值插入到当前数值的末尾；\n 1. 将当前数值存储起来。"""
+
     def __init__(
         self,
         values: tuple[int, ...] = (),
@@ -343,14 +358,13 @@ class StoreOption(OptionBaseMethod):
         self.special_values = values
 
     def method(self) -> None:
-        # STORE 的释放操作，将存储数字插入当前数值的末尾
         if len(self.option_values) > 0:
             self.value_str += str(self.option_values[0])
         else:
             raise GameError.StoreEmptyError
 
     def special_method(self) -> int:
-        # 设置 STORE 操作的存储值为当前数值，并返回该操作的消耗。
+        """设置 STORE 操作的存储值为当前数值，并返回该操作的消耗。"""
         if self.value_int < 0:
             raise GameError.StoreNegativeError(self.value_int)
         self.option_values = (self.value_int,)
@@ -358,18 +372,18 @@ class StoreOption(OptionBaseMethod):
 
 
 class Inv10Option(OptionBaseMethod):
+    """将当前数值每个数字 d 替换为 10-d，但 0 不变。"""
+
     def __init__(self) -> None:
         super().__init__(
             option_type=OptionType.INV10,
             display_template="Inv10",
-            help_message_template="将当前数值每个数字 d 替换为 10-d。",
+            help_message_template="将当前数值每个数字 d 替换为 10-d，但 0 不变。",
             background_color="#DB7633",
             option_value_count=0,
         )
 
     def method(self) -> None:
-        # 将当前数值的字符串表示中的每个数字 d 替换为 10-d 作为新的当前数值，注意负号
-        # 注意 0 应当替换为 0
         try:
             if self.value_str.startswith("-"):
                 self.value_str = "-" + "".join(
@@ -384,6 +398,8 @@ class Inv10Option(OptionBaseMethod):
 
 
 class CutOption(OptionBaseMethod):
+    """将当前数值中所有的某数字删除。"""
+
     def __init__(
         self,
         values: tuple[int, ...] = (),
@@ -398,11 +414,12 @@ class CutOption(OptionBaseMethod):
         )
 
     def method(self) -> None:
-        # 将当前数值的字符串表示中的参数中的第一个值的字符串表示删除
         self.value_str = self.value_str.replace(str(self.option_values[0]), "")
 
 
 class CursorRoundOption(OptionBaseMethod):
+    """将给定参数位置处的数字进行四舍五入。"""
+
     def __init__(self) -> None:
         super().__init__(
             option_type=OptionType.CURSOR_ROUND,
@@ -413,8 +430,6 @@ class CursorRoundOption(OptionBaseMethod):
         )
 
     def method(self) -> None:
-        # 将当前数值的字符串表示中的光标位置处的数字进行四舍五入。
-        # 判断光标位置合法性时考虑负号
         if self.cursor_position < 2 or self.cursor_position > len(  # noqa: PLR2004
             self.value_str.lstrip("-")
         ):  # 如果取个位位置，无效，所以范围从 2 开始。
@@ -440,6 +455,8 @@ class CursorRoundOption(OptionBaseMethod):
 
 
 class CursorDeleteOption(OptionBaseMethod):
+    """将给定参数位置处的数字删除。"""
+
     def __init__(self) -> None:
         super().__init__(
             option_type=OptionType.CURSOR_DELETE,
@@ -450,8 +467,6 @@ class CursorDeleteOption(OptionBaseMethod):
         )
 
     def method(self) -> None:
-        # 将当前数值的字符串表示中的光标位置处的数字删除。
-        # 判断光标位置合法性时考虑负号
         if self.cursor_position < 1 or self.cursor_position > len(
             self.value_str.lstrip("-")
         ):
@@ -465,6 +480,8 @@ class CursorDeleteOption(OptionBaseMethod):
 
 
 class CursorInsertOption(OptionBaseMethod):
+    """将给定参数位置处插入某个数字。"""
+
     def __init__(
         self,
         values: tuple[int, ...] = (),
@@ -479,8 +496,6 @@ class CursorInsertOption(OptionBaseMethod):
         )
 
     def method(self) -> None:
-        # 将当前数值的字符串表示中的参数中的第一个值的字符串表示插入到光标位置处。
-        # 判断光标位置合法性时考虑负号
         if self.cursor_position < 0 or self.cursor_position > len(
             self.value_str.lstrip("-")
         ):
@@ -499,6 +514,8 @@ class CursorInsertOption(OptionBaseMethod):
 
 
 class CursorAddOption(OptionBaseMethod):
+    """将给定参数位置处的数字与某个数字进行相加（自动对 10 取模）。"""
+
     def __init__(
         self,
         values: tuple[int, ...] = (),
@@ -507,14 +524,12 @@ class CursorAddOption(OptionBaseMethod):
             option_type=OptionType.CURSOR_ADD,
             option_values=values,
             display_template="+{}",
-            help_message_template="【需要额外参数】\n 将给定参数位置处的数字与{}进行相加。",  # noqa: E501
+            help_message_template="【需要额外参数】\n 将给定参数位置处的数字与{}进行相加（自动对 10 取模）。",  # noqa: E501
             background_color="#318DD9",
             option_value_count=1,
         )
 
     def method(self) -> None:
-        # 将当前数值的字符串表示中的光标位置处的数字与参数中的第一个值的整数进行相加，
-        # 再将结果替换回光标位置处。判断光标位置合法性时考虑负号
         if self.cursor_position < 1 or self.cursor_position > len(
             self.value_str.lstrip("-")
         ):
@@ -534,6 +549,8 @@ class CursorAddOption(OptionBaseMethod):
 
 
 class CursorSubOption(OptionBaseMethod):
+    """将给定参数位置处的数字与某个数进行相减（自动对 10 取模）。"""
+
     def __init__(
         self,
         values: tuple[int, ...] = (),
@@ -542,14 +559,12 @@ class CursorSubOption(OptionBaseMethod):
             option_type=OptionType.CURSOR_SUB,
             option_values=values,
             display_template="-{}",
-            help_message_template="【需要额外参数】\n 将给定参数位置处的数字与{}进行相减。",  # noqa: E501
+            help_message_template="【需要额外参数】\n 将给定参数位置处的数字与{}进行相减（自动对 10 取模）。",  # noqa: E501
             background_color="#318DD9",
             option_value_count=1,
         )
 
     def method(self) -> None:
-        # 将当前数值的字符串表示中的光标位置处的数字与参数中的第一个值的整数进行相减，
-        # 再将结果替换回光标位置处。判断光标位置合法性时考虑负号
         if self.cursor_position < 1 or self.cursor_position > len(
             self.value_str.lstrip("-")
         ):
@@ -569,6 +584,8 @@ class CursorSubOption(OptionBaseMethod):
 
 
 class CursorShiftOption(OptionBaseMethod):
+    """将当前数值的数字顺序向左或向右移动相应次数。正向左，负向右。"""
+
     def __init__(self) -> None:
         super().__init__(
             option_type=OptionType.CURSOR_SHIFT,
@@ -603,6 +620,8 @@ class CursorShiftOption(OptionBaseMethod):
 
 
 class CursorReplaceOption(OptionBaseMethod):
+    """将给定参数位置处的数字替换为某个数。"""
+
     def __init__(
         self,
         values: tuple[int, ...] = (),
@@ -617,8 +636,6 @@ class CursorReplaceOption(OptionBaseMethod):
         )
 
     def method(self) -> None:
-        # 将当前数值的字符串表示中的光标位置处的数字替换为参数中的第一个值的字符串表示。
-        # 判断光标位置合法性时考虑负号
         if self.cursor_position < 1 or self.cursor_position > len(
             self.value_str.lstrip("-")
         ):
@@ -632,6 +649,8 @@ class CursorReplaceOption(OptionBaseMethod):
 
 
 class CursorLockOption(OptionBaseMethod):
+    """锁定当前数值光标位置处的数字，使其在进行下一步操作时不会改变。"""
+
     def __init__(self) -> None:
         super().__init__(
             option_type=OptionType.CURSOR_LOCK,
@@ -643,8 +662,6 @@ class CursorLockOption(OptionBaseMethod):
         self.lock_position = 0
 
     def method(self) -> None:
-        # 锁定当前数值的字符串表示中的光标位置处的数字，使其在进行操作时不会改变。
-        # 判断光标位置合法性时考虑负号
         if self.cursor_position < 1 or self.cursor_position > len(
             self.value_str.lstrip("-")
         ):
@@ -654,13 +671,15 @@ class CursorLockOption(OptionBaseMethod):
         self.lock_position = self.cursor_position
 
     def special_method(self) -> int:
-        # 获取 CURSOR_LOCK 操作的锁定位置，并清空锁定位置。
+        """获取 CURSOR_LOCK 操作的锁定位置，并清空锁定位置。"""
         ret = self.lock_position
         self.lock_position = 0
         return ret
 
 
 class OptionFactory:
+    """操作工厂类，根据操作类型和参数创建对应的实例。"""
+
     @staticmethod
     def create_option(
         option_type: OptionType,
@@ -693,6 +712,7 @@ class OptionFactory:
             OptionType.CURSOR_ADD: CursorAddOption,
             OptionType.CURSOR_SUB: CursorSubOption,
             OptionType.CURSOR_REPLACE: CursorReplaceOption,
+            OptionType.CURSOR_SHIFT: CursorShiftOption,
             OptionType.CURSOR_LOCK: CursorLockOption,
         }
         if option_type not in option_classes:

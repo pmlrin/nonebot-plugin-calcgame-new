@@ -7,8 +7,11 @@ class CalcGameError(Exception):
 
 
 class ConvertIntError(CalcGameError):
-    def __init__(self, value: str) -> None:
-        super().__init__(f"无法将 '{value}' 转换为整数。")
+    def __init__(self, value: str = "0") -> None:
+        if value == "0":
+            super().__init__("无法将输入转换为整数。")
+        else:
+            super().__init__(f"无法将 '{value}' 转换为整数。")
 
 
 class InvalidInputError(CalcGameError):

@@ -9,12 +9,16 @@ from nonebot_plugin_htmlrender import template_to_pic
 
 
 class KeyProperty:
+    """按键属性类，包含按键的颜色和显示文本"""
+
     def __init__(self, color: str, display_text: str) -> None:
         self.color = color
         self.display_text = display_text
 
 
 async def html_to_image(game: CalcGame) -> bytes:
+    """将游戏界面数据转换为图片字节流"""
+
     unuse_key_color = "#bdc3c7"
     portal_sign = "▼"
     lock_sign = "▣"

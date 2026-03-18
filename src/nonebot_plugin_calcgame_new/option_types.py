@@ -4,8 +4,9 @@ from typing import Any
 from . import game_error as GameError  # noqa: N812
 
 
-# 定义游戏中各类操作的枚举类型
 class OptionType(Enum):
+    """定义游戏中各类操作的枚举类型"""
+
     ERROR = auto()
     ADD = auto()
     SUBTRACT = auto()
@@ -38,6 +39,8 @@ class OptionType(Enum):
 
 
 class OptionCategory:
+    """定义游戏中各类操作的分类，按照操作参数数量和特殊属性进行分类。"""
+
     def __init__(self) -> None:
         self.no_values = (
             OptionType.BACKSPACE,
@@ -85,8 +88,9 @@ class OptionCategory:
         )
 
 
-# 定义游戏中各类操作的行为基类
 class OptionBaseMethod:
+    """定义游戏中各类操作的行为基类，包含操作的基本属性和方法。"""
+
     def __init__(  # noqa: PLR0913
         self,
         option_type: OptionType = OptionType.ERROR,
@@ -118,23 +122,26 @@ class OptionBaseMethod:
             )
 
     def method(self) -> None:
-        pass
+        """该方法用于执行该操作的行为，具体行为由具体操作类型决定。"""
 
     def special_method(self) -> Any:
-        pass
+        """该方法用于执行该操作的特殊行为，具体行为由具体操作类型决定。"""
 
     def display_format(self) -> str:
+        """该方法用于生成该操作的显示文本。"""
         if len(self.option_values) == 0:
             return self.display_template
         return self.display_template.format(*self.option_values)
 
     def help_message_format(self) -> str:
+        """该方法用于生成该操作的帮助信息文本。"""
         if len(self.option_values) == 0:
             return self.help_message_template
         return self.help_message_template.format(*self.option_values)
 
     def react_modify(self, option_value_add: int = 0) -> None:
-        # 该方法用于处理 MODIFY 操作的反应行为，接受一个参数 value_add，表示要添加到当前数值上的值。  # noqa: E501
+        """该方法用于处理 MODIFY 操作的反应行为。
+        接受一个参数 value_add，表示要添加到当前数值上的值。"""
         if self.option_type in OptionCategory().one_value:
             self.option_values = (self.option_values[0] + option_value_add,)
 
@@ -151,7 +158,7 @@ class OptionBaseMethod:
         # 传送门，默认为 (0, 0)，表示没有传送门。传送门为 (a, b) 时
         # 表示当数值的位数超过 a 位时，将第 a 位的数字传送到第 b 位上。
     ) -> None:
-        # 设置当前数值，并记录之前的数值以便进行锁位和传送门操作
+        """设置当前数值，并记录之前的数值以便进行锁位和传送门操作"""
         self.value_int = value_int
         self.value_str = str(value_int)
         self.before_value_int = self.value_int
@@ -161,6 +168,7 @@ class OptionBaseMethod:
         self.portal = portal
 
     def get_value(self) -> tuple[int, str]:
+        """获取当前数值，并进行锁位和传送门操作"""
         portal_log = ""  # 记录传送门操作的日志，用于在游戏界面上展示传送门的变化过程
 
         if self.value_int >= 10**9 or self.value_int <= -(10**8):
